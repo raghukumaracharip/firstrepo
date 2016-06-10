@@ -1,0 +1,48 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>asdf</title>
+	</head>
+	<body>
+		<div id="app1">
+			<div ng-controller="app1Controller">
+				<h1 ng-bind="name"></h1>
+				<div id="app2">
+					<div ng-controller="app2Controller">
+						<h3 ng-bind="name"></h3>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.0/angular.js"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.3.1/angular-ui-router.min.js"></script>
+	<script type="text/javascript">
+		var app1 = document.getElementById('app1');
+		var app2 = document.getElementById('app2');
+	    angular.module('app1', []).controller("app1Controller",['$scope',function($scope){
+			$scope.name = "Raghu Kumar";
+
+		}]).service('ServiceA', function() {
+		    this.getValue = function() {
+		        return this.myValue;
+		    };
+		    this.setValue = function(newValue) {
+		        this.myValue = newValue;
+		    }
+		});
+		angular.module('app2', ['app1']).controller("app2Controller",['$scope','ServiceA',function($scope,ServiceA){
+			ServiceA.setValue("Yashika");
+			$scope.name = ServiceA.getValue();
+		}]).service('ServiceB', function(ServiceA) {
+		    this.getValue = function() {
+		        return ServiceA.getValue();
+		    };
+
+		    this.setValue = function(newValue) {
+		        ServiceA.setValue("Chintu");
+		    }
+		});
+	    angular.bootstrap(app1, ['app1','app2']);		
+	</script>
+</html>
